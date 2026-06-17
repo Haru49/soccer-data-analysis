@@ -1,0 +1,46 @@
+# macOS / editor noise
+.DS_Store
+**/.DS_Store
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+__pycache__/
+**/__pycache__/
+
+# Personal / private workspaces
+あつと/
+Dev/
+**/Dev/
+CLAUDE.md
+claude.md
+**/CLAUDE.md
+**/claude.md
+.claude/
+**/.claude/
+
+# Data should stay local. Keep only data documentation/placeholders.
+data/**
+!data/
+!data/README.md
+!data/98_reference/
+!data/98_reference/README.md
+!data/99_unused/
+!data/99_unused/README.md
+!data/candidates/
+!data/candidates/.gitkeep
+!data/candidates/00_README.md
+!data/interim/
+!data/interim/.gitkeep
+!data/processed/
+!data/processed/.gitkeep
+!data/raw/
+!data/raw/.gitkeep
+
+# Generated analysis outputs
+outputs/
+**/outputs/
+
+# Local environments / secrets
+.env
+.env.*
+venv/
+.venv/
