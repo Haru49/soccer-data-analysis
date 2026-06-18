@@ -68,9 +68,9 @@ Centroid-EA Threat
 ```text
 features_centroid_ea_by_frame.csv
 labels_future_events_by_frame.csv
-analysis_spearman_shot_in_3s.csv
-analysis_mannwhitney_shot_in_3s.csv
-model_logistic_shot_in_3s_summary.csv
+analysis_spearman_shot_in_1s.csv
+analysis_mannwhitney_shot_in_1s.csv
+model_logistic_shot_in_1s_summary.csv
 pre_shot_threat_index_by_frame.csv
 ```
 
@@ -156,13 +156,14 @@ final_third_entry_in_3s
 goal_in_5s
 ```
 
-最初の主目的変数は `shot_in_3s` を第一候補にする。
+基礎文献に合わせ、最初の主目的変数は `shot_in_1s` とする。
+`shot_in_3s` と `shot_in_5s` は感度分析に使う。
 
 理由:
 
-- 1秒は短すぎて配置変化の影響が出にくい可能性がある。
-- 5秒は他の要因が入りすぎる可能性がある。
-- 3秒は、配置状態と次の攻撃アクションの関係を見る初期値として扱いやすい。
+- 1秒は基礎文献のxSと同じ時間窓なので、研究上の比較がしやすい。
+- 1秒は時刻同期誤差の影響を受けやすいため、3秒でも確認する。
+- 5秒は他の要因が入りやすいが、チーム配置の影響が遅れて現れる可能性の確認に使う。
 
 ### 3. 探索分析
 
@@ -192,7 +193,7 @@ Mann-Whitney U検定
 目的変数:
 
 ```text
-shot_in_3s
+shot_in_1s
 ```
 
 説明変数の初期候補:
@@ -267,8 +268,10 @@ PSTI =
 完了条件:
 
 ```text
-shot_in_3s を作れるかどうかが判断できている。
+shot_in_1s を作れるかどうかが判断できている。
 ```
+
+詳細要件は `05_PRE_SHOT_THREAT_REQUIREMENTS.md` を参照する。
 
 ### Phase 1: 特徴量テーブル作成
 
@@ -322,7 +325,7 @@ t時点の特徴量に対して、未来N秒以内のイベントを0/1で付与
 完了条件:
 
 ```text
-shot_in_3s の陽性数・陰性数が確認できている。
+shot_in_1s / 3s / 5s の陽性数・陰性数が確認できている。
 ```
 
 ### Phase 3: 探索分析
@@ -357,7 +360,7 @@ EA・重心特徴量が未来のシュート発生と関係するか確認する
 目的:
 
 ```text
-EA・重心だけで shot_in_3s をどの程度説明できるか確認する。
+EA・重心だけで shot_in_1s をどの程度説明できるか確認する。
 ```
 
 やること:
@@ -418,7 +421,7 @@ EA・重心に予測情報があるか判断できている。
 2. シュートイベントの時刻またはframe_number
 3. 重心CSVとEA CSVの結合キー
 4. 攻撃方向の補正方法
-5. shot_in_3s が作れるか
+5. shot_in_1s が作れるか
 ```
 
 この確認が終わるまで、モデル実装や指標式の確定はしない。
@@ -433,7 +436,7 @@ EPVやPitch Controlは強力だが、実装やデータ要求が重い。
 
 ## 注意点
 
-- シュートイベントが少なすぎる場合、`shot_in_3s` だけでは検証が弱くなる。
+- シュートイベントが少なすぎる場合、`shot_in_1s` だけでは検証が弱くなる。
 - その場合は `PA侵入`、`final third侵入`、`ゴール前30m侵入` を代替目的変数にする。
 - 1試合だけで結論を出しすぎない。
 - まずは「可能性の検証」として扱う。
